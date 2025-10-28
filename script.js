@@ -89,4 +89,20 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
+  // Hamburger Menu Toggle
+  const hamburger = document.getElementById("hamburger");
+  const mobileMenu = document.getElementById("mobileMenu");
+
+  hamburger.addEventListener("click", () => {
+    mobileMenu.classList.toggle("active");
+  });
+
+  // Close mobile menu on link click
+  const mobileLinks = document.querySelectorAll(".mobile-nav-links a");
+  mobileLinks.forEach(link => {
+    link.addEventListener("click", () => {
+      mobileMenu.classList.remove("active");
+    });
+  });
+
 });
