@@ -105,4 +105,37 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
+  // Tag Truncation and Expansion Logic
+  const tagContainers = document.querySelectorAll('.tags');
+
+  tagContainers.forEach(container => {
+    const tags = container.querySelectorAll('.tag');
+    if (tags.length > 2) {
+      // Hide tags beyond the first 2
+      for (let i = 2; i < tags.length; i++) {
+        tags[i].style.display = 'none';
+      }
+
+      // Create the "+" tag
+      const remainingCount = tags.length - 2;
+      const plusTag = document.createElement('span');
+      plusTag.className = 'tag plus-tag';
+      plusTag.textContent = `+${remainingCount}`;
+      plusTag.style.cursor = 'pointer';
+
+      // Insert the "+" tag after the second tag
+      container.insertBefore(plusTag, tags[2]);
+
+      // Add click event to expand tags
+      plusTag.addEventListener('click', () => {
+        // Show all hidden tags
+        for (let i = 2; i < tags.length; i++) {
+          tags[i].style.display = 'flex';
+        }
+        // Remove the "+" tag
+        plusTag.remove();
+      });
+    }
+  });
+
 });
