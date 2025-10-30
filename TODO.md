@@ -1,3 +1,0 @@
-- [ ] Change id="darkModeSwitch" to class="darkModeSwitch" in both toggle inputs in index.html
-- [ ] Update script.js to use querySelectorAll for toggles and sync them
-- [ ] Test the dark mode toggle in both desktop and mobile views

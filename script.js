@@ -1,4 +1,16 @@
 document.addEventListener("DOMContentLoaded", () => {
+
+  // Simple search filter (filters posts by title)
+  document.querySelector('.search').addEventListener('input', function() {
+      const query = this.value.toLowerCase();
+      document.querySelectorAll('.post').forEach(post => {
+          const titleElement = post.querySelector('h2') || post.querySelector('h3');
+          const title = titleElement ? titleElement.textContent.toLowerCase() : '';
+          post.style.display = title.includes(query) ? 'block' : 'none';
+      });
+  });
+
+
   // Greeting Message
   const hour = new Date().getHours();
 
