@@ -669,6 +669,11 @@ input:checked + .slider:before {
   gap: 10px;
 }
 
+.contact-info p {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+
 
 
 /* ----- Share wrapper (keeps button & dropdown together) ----- */
