@@ -354,20 +354,60 @@ async function sendMsg() {
   chatInput.value = '';
 
   // ---- 2. YOUR INFORMATION (replace with whatever you want) ----
-  const MY_DATA = `
+const MY_DATA = `
 Name: Tika Ram Khojwar
-Occupation: Professor & Developer
-Experience: 2 years
-Projects: 3 (E-Commerce Website, Leetlab, mystry_message_app_nextjs, Blogging Website)
-Skills: 5 categories (Frontend, Backend, Databases, Tools, Soft Skills)
-Education: Master of Computer Information Systems (MCIS) from Nepal College of Information Technology, Pokhara University (2020-2024, CGPA 3.76/4.0); Bachelor of Computer Application (BCA) from Crimson College of Technology, Pokhara University (2015-2019)
+TikaBook: TikaBook is a social-media-style portfolio. Chat with AI to discover everything about Tika Ram Khojwar.
+
+Job Title: Professor at KIST
+Current Location: Kathmandu, Nepal
+Years of Experience: 2 years
+Total Projects: 3
+   • E-Commerce Website
+   • Leetlab
+   • mystry_message_app_nextjs
+   • Blogging Website
+
+Skills Overview: 5 categories
+   • Frontend
+   • Backend
+   • Databases
+   • Tools
+   • Soft Skills
+
+Education:
+   • Master of Computer Information Systems (MCIS) – Nepal College of Information Technology, Pokhara University (2020-2024, CGPA 3.76/4.0)
+   • Bachelor of Computer Application (BCA) – Crimson College of Technology, Pokhara University (2015-2019)
+
 Frontend Skills: HTML5, CSS3, JavaScript, React, Next.js, Redux, TailwindCSS, Responsive Design
 Backend Skills: Node.js, Express.js, RESTful APIs, Authentication, JWT, NextAuth
 Databases: MongoDB, Mongoose, PostgreSQL, Prisma
 Tools: Git, GitHub, VS Code, Postman, Vercel, NPM/Yarn, Linux
 Soft Skills: Problem Solving, Team Collaboration, Clean Code, Agile
-Contact: Email - khojwartikaram@gmail.com, LinkedIn - https://www.linkedin.com/in/tika-ram-khojwar-2116a9179/, GitHub - https://github.com/khojwar
-  `.trim();
+
+Contact:
+   • Email: khojwartikaram@gmail.com
+   • LinkedIn: https://www.linkedin.com/in/tika-ram-khojwar-2116a9179/
+   • GitHub: https://github.com/khojwar
+   • Phone: +977 9867173083
+
+Availability: Open to freelance, teaching, and collaboration projects
+Languages: Nepali (native), English (fluent)
+Hobbies: Coding challenges, open-source contributions, hiking, photography
+Favorite Quote: "Code is like humor. When you have to explain it, it’s bad." – Cory House
+Fun Fact: Built an AI-powered chat inside my own portfolio!
+Teaching Subjects: Web Technology I & II, AI, IT Ethics & Cybersecurity, Programming with Python, Database Systems
+Freelance Rate: $30–50/hour (negotiable)
+Portfolio URL: https://tikaram.dev
+YouTube: https://youtube.com/@tikaram
+Preferred Stack: React + Next.js + Express + Mongodb + Mongoose + Prisma + PostgreSQL + Tailwind + laravel
+Time Zone: NPT (UTC+5:45)
+Response Time: Usually within 2 hours
+`.trim();
+
+// Certifications: Google Cloud Associate, AWS Developer (2024)
+// Awards: Best Final-Year Project (NCIT, 2024)
+// Blog: https://blog.tikaram.dev
+// Open Source Contributions: 12+ repos, 300+ stars
 
   // ---- 3. Get strict answer ----
   const botReply = await getGeminiResponse(userMsg, MY_DATA);
