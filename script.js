@@ -17,23 +17,26 @@ document.addEventListener("DOMContentLoaded", () => {
   if (post) post.textContent = `${greeting}, I'm Tika Ram Khojwar`;
 
   // 🌙 Dark Mode Toggle
-  const toggle = document.getElementById("darkModeSwitch");
+  const toggles = document.querySelectorAll(".darkModeSwitch");
   const body = document.body;
 
   // Load mode from localStorage
-  if (localStorage.getItem("theme") === "dark") {
+  const isDark = localStorage.getItem("theme") === "dark";
+  if (isDark) {
     body.classList.add("dark");
-    toggle.checked = true;
   }
+  toggles.forEach(toggle => {
+    toggle.checked = isDark;
+  });
 
-  toggle.addEventListener("change", () => {
-    if (toggle.checked) {
-      body.classList.add("dark");
-      localStorage.setItem("theme", "dark");
-    } else {
-      body.classList.remove("dark");
-      localStorage.setItem("theme", "light");
-    }
+  toggles.forEach(toggle => {
+    toggle.addEventListener("change", () => {
+      const checked = toggle.checked;
+      body.classList.toggle("dark", checked);
+      localStorage.setItem("theme", checked ? "dark" : "light");
+      // Sync all toggles
+      toggles.forEach(t => t.checked = checked);
+    });
   });
 
   // Navigation Active Link
