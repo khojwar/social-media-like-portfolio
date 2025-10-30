@@ -268,72 +268,120 @@ closeChat.addEventListener('click', () => {
   chatBox.style.display = 'none';
 });
 
+
+
+/**
+ * @param {string} userQuestion   – What the user typed
+ * @param {string} myInfo         – The ONLY information the model may use
+ * @returns {Promise<string>}     – Model reply (or error message)
+ */
+
 // Function to call Gemini API
-async function getGeminiResponse(userMessage) {
+async function getGeminiResponse(userMessage, myInfo) {
   if (!GEMINI_API_KEY) {
     return 'Gemini API key not configured.';
   }
 
+  const payload = {
+    contents: [
+      // --- 1. SYSTEM PROMPT (friendly but strict) ---
+      {
+        role: 'model',
+        parts: [{
+          text: `
+You are a **helpful, friendly assistant** that answers **only** using the knowledge provided below.
+- If the answer can be found in the knowledge, reply in a **natural, engaging tone** (add a little flair, humor, or warmth when it fits).
+- If the answer **cannot** be derived from the knowledge, reply **exactly**: "I don't have that information."
+- Never make up facts, dates, or details not present in the knowledge.
+          `.trim()
+        }]
+      },
+
+      // --- 2. KNOWLEDGE (your data) ---
+      {
+        role: 'model',
+        parts: [{ text: myInfo || 'No information provided.' }]
+      },
+
+      // --- 3. USER QUESTION ---
+      {
+        role: 'user',
+        parts: [{ text: userMessage }]
+      }
+    ],
+
+    // --- CREATIVE SETTINGS ---
+    generationConfig: {
+      temperature: 0.9,      // more creative, varied wording
+      maxOutputTokens: 300,  // enough room for expressive answers
+      topP: 0.95,
+      topK: 40
+    }
+  };
+
   try {
     const response = await fetch(`${GEMINI_API_URL}?key=${GEMINI_API_KEY}`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        contents: [{
-          parts: [{ text: userMessage }],
-        }]
-      })
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
     });
 
     if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(`API Error: ${response.status} - ${errorText}`);
+      const err = await response.text();
+      throw new Error(`API Error: ${response.status} – ${err}`);
     }
 
     const data = await response.json();
-    console.log("AI Response:", data);
+    console.log('Gemini raw response:', data);
 
-    // Safety check
-    if (!data.candidates || !data.candidates[0]?.content?.parts[0]?.text) {
-      return "Sorry, I didn't receive a valid response.";
-    }
+    const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
+    return text?.trim() || "I don't have that information.";
 
-    return data.candidates[0].content.parts[0].text;
-
-  } catch (error) {
-    console.error('Gemini API Error:', error);
-    return 'Sorry, I\'m having trouble responding right now.';
+  } catch (err) {
+    console.error('Gemini API Error:', err);
+    return 'Sorry, something went wrong. Please try again later.';
   }
 }
 
+
 // Send message function
 async function sendMsg() {
-  const msg = chatInput.value.trim();
-  if (!msg) return;
+  const userMsg = chatInput.value.trim();
+  if (!userMsg) return;
 
-  // Append user message
-  const userMsg = document.createElement('div');
-  userMsg.className = 'message sent';
-  userMsg.textContent = msg;
-  chatMessages.appendChild(userMsg);
-
-  // Clear input
+  // ---- 1. Show user message ----
+  appendMessage(userMsg, 'sent');
   chatInput.value = '';
 
-  // Scroll to bottom
-  chatMessages.scrollTop = chatMessages.scrollHeight;
+  // ---- 2. YOUR INFORMATION (replace with whatever you want) ----
+  const MY_DATA = `
+Name: Tika Ram Khojwar
+Occupation: Professor & Developer
+Experience: 2 years
+Projects: 3 (E-Commerce Website, Leetlab, mystry_message_app_nextjs, Blogging Website)
+Skills: 5 categories (Frontend, Backend, Databases, Tools, Soft Skills)
+Education: Master of Computer Information Systems (MCIS) from Nepal College of Information Technology, Pokhara University (2020-2024, CGPA 3.76/4.0); Bachelor of Computer Application (BCA) from Crimson College of Technology, Pokhara University (2015-2019)
+Frontend Skills: HTML5, CSS3, JavaScript, React, Next.js, Redux, TailwindCSS, Responsive Design
+Backend Skills: Node.js, Express.js, RESTful APIs, Authentication, JWT, NextAuth
+Databases: MongoDB, Mongoose, PostgreSQL, Prisma
+Tools: Git, GitHub, VS Code, Postman, Vercel, NPM/Yarn, Linux
+Soft Skills: Problem Solving, Team Collaboration, Clean Code, Agile
+Contact: Email - khojwartikaram@gmail.com, LinkedIn - https://www.linkedin.com/in/tika-ram-khojwar-2116a9179/, GitHub - https://github.com/khojwar
+  `.trim();
 
-  // Get AI response from Gemini
-  const botResponse = await getGeminiResponse(msg);
-  
+  // ---- 3. Get strict answer ----
+  const botReply = await getGeminiResponse(userMsg, MY_DATA);
 
-  // Append bot message
-  const botMsg = document.createElement('div');
-  botMsg.className = 'message received';
-  botMsg.innerHTML = botResponse;
-  chatMessages.appendChild(botMsg);
+  // ---- 4. Show bot reply ----
+  appendMessage(botReply, 'received');
+}
+
+// Helper to append messages (you already have similar code)
+function appendMessage(text, type) {
+  const div = document.createElement('div');
+  div.className = `message ${type}`;
+  div.textContent = text;
+  chatMessages.appendChild(div);
   chatMessages.scrollTop = chatMessages.scrollHeight;
 }
 
