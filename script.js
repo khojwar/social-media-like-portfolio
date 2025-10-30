@@ -255,7 +255,7 @@ const chatMessages = document.querySelector('.chat-messages');
 
 // Gemini API Configuration (Add your API key here)
 // Gemini API Configuration
-const GEMINI_API_KEY = '';
+const GEMINI_API_KEY = 'AIzaSyDP-5s8ygKb8hEpGyfuQaN0IpkeumPJmFA';
 const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent';
 
 // Toggle chat box
