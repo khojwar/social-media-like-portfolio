@@ -15,8 +15,9 @@
     <input type="text" class="search" placeholder="Search portfolio..." />
     <div class="nav-icons">
       <i class="icon hamburger" id="hamburger">☰</i>
-      <i class="icon">🏠</i>
-      <i class="icon">💬</i>
+      <a href="#home"><i class="icon">🏠</i></a>
+      <!-- chat button -->
+      <i class="icon" id="chatIcon">💬</i>
       <i class="icon">🔔</i>
       <img src="./public/avatar.webp" alt="Profile" class="profile-pic" />
     </div>
@@ -827,6 +828,24 @@
 
   </div>
 
+  <!-- Chat Box -->
+  <div id="chatBox" class="chat-box">
+    <div class="chat-header">
+      <span>Chat Support</span>
+      <button id="closeChat">×</button>
+    </div>
+    <div class="chat-messages">
+      <div class="message received">Hello! How can I help you today?</div>
+      <div class="message received">Welcome to Tika Ram Khojwar's portfolio!</div>
+      <div class="message received">Feel free to ask about projects or skills.</div>
+    </div>
+    <div class="chat-input">
+      <input type="text" placeholder="Type a message..." id="chatInput">
+      <button id="sendMessage">Send</button>
+    </div>
+  </div>
+
   <script src="script.js"></script>
+
 </body>
 </html>

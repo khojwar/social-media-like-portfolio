@@ -245,5 +245,105 @@ document.addEventListener('click', function (e) {
     window.open(shareUrl, '_blank', 'width=600,height=400');
 });
 
+// Chat Box Functionality
+const chatIcon = document.getElementById('chatIcon');
+const chatBox = document.getElementById('chatBox');
+const closeChat = document.getElementById('closeChat');
+const chatInput = document.getElementById('chatInput');
+const sendMessage = document.getElementById('sendMessage');
+const chatMessages = document.querySelector('.chat-messages');
+
+// Gemini API Configuration (Add your API key here)
+// Gemini API Configuration
+const GEMINI_API_KEY = '';
+const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent';
+
+// Toggle chat box
+chatIcon.addEventListener('click', () => {
+  chatBox.style.display = chatBox.style.display === 'none' || chatBox.style.display === '' ? 'flex' : 'none';
+});
+
+// Close chat box
+closeChat.addEventListener('click', () => {
+  chatBox.style.display = 'none';
+});
+
+// Function to call Gemini API
+async function getGeminiResponse(userMessage) {
+  if (!GEMINI_API_KEY) {
+    return 'Gemini API key not configured.';
+  }
+
+  try {
+    const response = await fetch(`${GEMINI_API_URL}?key=${GEMINI_API_KEY}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        contents: [{
+          parts: [{ text: userMessage }],
+        }]
+      })
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`API Error: ${response.status} - ${errorText}`);
+    }
+
+    const data = await response.json();
+    console.log("AI Response:", data);
+
+    // Safety check
+    if (!data.candidates || !data.candidates[0]?.content?.parts[0]?.text) {
+      return "Sorry, I didn't receive a valid response.";
+    }
+
+    return data.candidates[0].content.parts[0].text;
+
+  } catch (error) {
+    console.error('Gemini API Error:', error);
+    return 'Sorry, I\'m having trouble responding right now.';
+  }
+}
+
+// Send message function
+async function sendMsg() {
+  const msg = chatInput.value.trim();
+  if (!msg) return;
+
+  // Append user message
+  const userMsg = document.createElement('div');
+  userMsg.className = 'message sent';
+  userMsg.textContent = msg;
+  chatMessages.appendChild(userMsg);
+
+  // Clear input
+  chatInput.value = '';
+
+  // Scroll to bottom
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+
+  // Get AI response from Gemini
+  const botResponse = await getGeminiResponse(msg);
+  
+
+  // Append bot message
+  const botMsg = document.createElement('div');
+  botMsg.className = 'message received';
+  botMsg.innerHTML = botResponse;
+  chatMessages.appendChild(botMsg);
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+// Send on button click
+sendMessage.addEventListener('click', sendMsg);
+
+// Send on Enter key
+chatInput.addEventListener('keypress', (e) => {
+  if (e.key === 'Enter') sendMsg();
+});
+
 
 });
