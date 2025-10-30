@@ -138,4 +138,51 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+  /* ---------- Likes ---------- */
+  document.querySelectorAll('.like-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const post = btn.closest('.post');
+            const countSpan = post.querySelector('.likes-count');
+            let count = parseInt(countSpan.textContent) || 0;
+            count++;
+            // countSpan.textContent = `${count} like${count > 1 ? 's' : ''}`;
+            countSpan.textContent = `${count}`;
+            // btn.textContent = 'Liked';
+            btn.style.color = 'blue';
+            btn.disabled = true;               // optional: prevent double-like
+        });
+    });
+
+    /* ---------- Comments ---------- */
+  document.querySelectorAll('.comment-form').forEach(form => {
+        form.addEventListener('submit', e => {
+            e.preventDefault();
+            const input = form.querySelector('input');
+            const text  = input.value.trim();
+            if (!text) return;
+
+            const post = form.closest('.post');   
+            const commentsDiv = post.querySelector('.comments');
+
+            const comment = document.createElement('div');
+            comment.className = 'comment';
+            comment.textContent = text;
+            commentsDiv.appendChild(comment);
+
+            input.value = '';
+        });
+    });
+
+  const commentBtn = document.querySelectorAll('.comment-btn')
+
+  commentBtn.forEach((cmtBtn) => {
+    cmtBtn.addEventListener('click', () => {
+      const post = cmtBtn.closest('.post');   
+      const form = post.querySelector('.comment-form');
+      form.style.display = 'flex';
+    });
+  });
+ 
+
+
 });
