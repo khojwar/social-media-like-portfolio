@@ -184,5 +184,66 @@ document.addEventListener("DOMContentLoaded", () => {
   });
  
 
+/* -------------------------------------------------------------
+   1. Open / close dropdown
+   ------------------------------------------------------------- */
+document.addEventListener('click', function (e) {
+    const shareBtn = e.target.closest('.share-btn');
+    if (shareBtn) {
+        e.stopPropagation();
+        const wrapper = shareBtn.closest('.share-wrapper');
+        if (wrapper) {
+            const dropdown = wrapper.querySelector('.share-dropdown');
+            // close all others
+            document.querySelectorAll('.share-dropdown.show').forEach(d => d.classList.remove('show'));
+            dropdown.classList.toggle('show');
+        }
+    } else {
+        // close all if clicking outside
+        document.querySelectorAll('.share-dropdown.show').forEach(d => d.classList.remove('show'));
+    }
+});
+
+/* -------------------------------------------------------------
+   2. Click on a social icon → share
+   ------------------------------------------------------------- */
+document.addEventListener('click', function (e) {
+    const btn = e.target.closest('.share-item');
+    if (!btn) return;
+
+    const platform = btn.dataset.platform;
+    const post = btn.closest('.post');
+    const title = post.querySelector('.content-title')?.textContent.trim() || document.title;
+    const url   = encodeURIComponent(window.location.href);
+    const text  = encodeURIComponent(title);
+
+    let shareUrl = '';
+
+    switch (platform) {
+        case 'facebook':
+            shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
+            break;
+        case 'twitter':
+            shareUrl = `https://twitter.com/intent/tweet?text=${text}&url=${url}`;
+            break;
+        case 'linkedin':
+            shareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${url}`;
+            break;
+        case 'whatsapp':
+            shareUrl = `https://wa.me/?text=${text}%20${url}`;
+            break;
+        case 'copy':
+            navigator.clipboard.writeText(window.location.href).then(() => {
+                alert('Link copied to clipboard!');
+            }).catch(() => {
+                prompt('Copy this link:', window.location.href);
+            });
+            return; // no new tab
+    }
+
+    // Open share window (most platforms open a popup)
+    window.open(shareUrl, '_blank', 'width=600,height=400');
+});
+
 
 });

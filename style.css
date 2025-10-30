@@ -671,6 +671,52 @@ input:checked + .slider:before {
 
 
 
+/* ----- Share wrapper (keeps button & dropdown together) ----- */
+.share-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+/* ----- Dropdown (hidden by default) ----- */
+.share-dropdown {
+    position: absolute;
+    left: 100%;
+    bottom: 0;
+    background: var(--card-bg);
+    border: 1px solid var(--active-link-bg);
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,.15);
+    display: none;               /* hidden */
+    gap: 4px;
+    padding: 6px;
+    z-index: 100;
+    min-width: 44px;
+}
+.share-dropdown.show { display: flex; }
+
+/* ----- Individual share icons ----- */
+.share-item {
+    background: transparent;
+    border: none;
+    width: 36px; height: 36px;
+    font-size: 1.2rem;
+    color: var(--text-color);
+    cursor: pointer;
+    border-radius: 6px;
+    transition: background .2s, color .2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.share-item:hover { background: var(--subtle-bg); }
+.share-item[data-platform="facebook"]   { color: #1877f2; }
+.share-item[data-platform="twitter"]    { color: #1da1f2; }
+.share-item[data-platform="linkedin"]   { color: #0a66c2; }
+.share-item[data-platform="whatsapp"]   { color: #25d366; }
+.share-item[data-platform="copy"]       { color: #65676b; }
+
+/* ----- Optional: close dropdown when clicking outside ----- */
+body.share-open .share-dropdown { display: none; }
 
 
 
