@@ -1,12 +1,12 @@
 
 document.addEventListener("DOMContentLoaded", () => {
-
   document.getElementById('search-icon').addEventListener('click', () => {
     document.querySelector('.logo-hamburger').style.display = 'none';
     document.querySelector('.nav-icons').style.display = 'none';
     document.querySelector('.search').style.display = 'flex';
     document.querySelector('.search').style.width = '100%';
-
+    // Auto focus the search input
+    document.querySelector('.search-input').focus();
   })
 
   // Simple search filter (filters posts by title)
@@ -16,7 +16,6 @@ document.addEventListener("DOMContentLoaded", () => {
         document.querySelector('.search .i-cross').style.display = 'block';
       } else {
         document.querySelector('.search .i-cross').style.display = 'none';
-
       }
       document.querySelectorAll('.post').forEach(post => {
           const titleElement = post.querySelector('h2') || post.querySelector('h3');
@@ -69,8 +68,8 @@ document.addEventListener("DOMContentLoaded", () => {
     hour < 12 ? "Good Morning" :
     hour < 18 ? "Good Afternoon" : "Good Evening";
 
-  const post = document.querySelector("#home h2");
-  if (post) post.textContent = `${greeting}, I'm Tika Ram Khojwar`;
+  const welcomeTitle = document.querySelector(".welcome-title");
+  if (welcomeTitle) welcomeTitle.textContent = `${greeting}, I'm Tika Ram Khojwar`;
 
   // 🌙 Dark Mode Toggle
   const toggles = document.querySelectorAll(".darkModeSwitch");

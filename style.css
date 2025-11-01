@@ -87,7 +87,13 @@ a {
 
 .logo-hamburger {
   display: flex;
+  justify-content: center;
+  align-items: center;
   gap: 20px;
+}
+
+.hamburger {
+  font-size: ;
 }
 
 
@@ -328,8 +334,7 @@ input:checked + .slider:before {
   height: 200px;
 }
 
-.welcome-card h2 {
-  font-size: var(--font-size-xl);
+.welcome-title {
   margin-bottom: 10px;
   font-family: "Orbitron", sans-serif;
   font-optical-sizing: auto;
@@ -920,6 +925,9 @@ body.share-open .share-dropdown { display: none; }
     height: 400px;
   }
   /* .post-header img { width:36px; height:36px; } */
+  .welcome-title {
+          font-size: var(--font-size-medium);
+  }
 }
 
 
@@ -936,5 +944,9 @@ body.share-open .share-dropdown { display: none; }
     #search-icon {
       display: block;
       cursor: pointer;
+    }
+
+    .welcome-title {
+      font-size: var(--font-size-base);
     }
 }
