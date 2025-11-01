@@ -57,6 +57,7 @@ body {
   color: var(--text-color);
   transition: background 0.3s, color 0.3s;
   overflow-x: hidden;
+  scroll-behavior: smooth;
 }
 
 a {
@@ -91,11 +92,6 @@ a {
   align-items: center;
   gap: 20px;
 }
-
-.hamburger {
-  font-size: ;
-}
-
 
 .search {
   width: 40%;
@@ -328,6 +324,8 @@ input:checked + .slider:before {
   background-position: center;
   color: white;
   padding: 20px;
+  margin: -20px;
+  border-radius: 10px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -887,6 +885,10 @@ body.share-open .share-dropdown { display: none; }
   .hamburger {
     display: block;
     cursor: pointer;
+  }
+
+  .welcome-card {
+    margin: -40px -20px -20px -20px;
   }
 
   .mobile-menu.active {

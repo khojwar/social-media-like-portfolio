@@ -334,54 +334,48 @@ closeChat.addEventListener('click', () => {
  * @returns {Promise<string>}     – Model reply (or error message)
  */
 
-// Function to call Gemini API
+// === Function to call Gemini API === //
 async function getGeminiResponse(userMessage, myInfo) {
   if (!GEMINI_API_KEY) {
-    return 'Gemini API key not configured.';
+    return '⚠️ Gemini API key not configured.';
   }
 
   const payload = {
     contents: [
-      // --- 1. SYSTEM PROMPT (friendly but strict) ---
       {
         role: 'model',
-        parts: [{
-          text: `
-You are a **helpful, friendly assistant** that answers **only** using the knowledge provided below.
-- If the answer can be found in the knowledge, reply in a **natural, engaging tone** (add a little flair, humor, or warmth when it fits).
-- If the answer **cannot** be derived from the knowledge, reply **exactly**: "I don't have that information."
-- Never make up facts, dates, or details not present in the knowledge.
-          `.trim()
-        }]
+        parts: [
+          {
+            text: `
+You are a friendly AI assistant who answers **only** using the knowledge below.
+If you don't know something, reply with "I don't have that information."
+Use a natural, engaging tone. Use Markdown formatting for clarity (bold, lists, line breaks).
+            `.trim(),
+          },
+        ],
       },
-
-      // --- 2. KNOWLEDGE (your data) ---
       {
         role: 'model',
-        parts: [{ text: myInfo || 'No information provided.' }]
+        parts: [{ text: myInfo || 'No information provided.' }],
       },
-
-      // --- 3. USER QUESTION ---
       {
         role: 'user',
-        parts: [{ text: userMessage }]
-      }
+        parts: [{ text: userMessage }],
+      },
     ],
-
-    // --- CREATIVE SETTINGS ---
     generationConfig: {
-      temperature: 0.9,      // more creative, varied wording
-      maxOutputTokens: 300,  // enough room for expressive answers
+      temperature: 0.9,
+      maxOutputTokens: 300,
       topP: 0.95,
-      topK: 40
-    }
+      topK: 40,
+    },
   };
 
   try {
     const response = await fetch(`${GEMINI_API_URL}?key=${GEMINI_API_KEY}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
+      body: JSON.stringify(payload),
     });
 
     if (!response.ok) {
@@ -394,99 +388,85 @@ You are a **helpful, friendly assistant** that answers **only** using the knowle
 
     const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
     return text?.trim() || "I don't have that information.";
-
   } catch (err) {
     console.error('Gemini API Error:', err);
-    return 'Sorry, something went wrong. Please try again later.';
+    return '😕 Sorry, something went wrong. Please try again later.';
   }
 }
 
-
-// Send message function
+// === Send Message Handler === //
 async function sendMsg() {
   const userMsg = chatInput.value.trim();
   if (!userMsg) return;
 
-  // ---- 1. Show user message ----
   appendMessage(userMsg, 'sent');
   chatInput.value = '';
 
-  // ---- 2. YOUR INFORMATION (replace with whatever you want) ----
-const MY_DATA = `
-Name: Tika Ram Khojwar
-TikaBook: TikaBook is a social-media-style portfolio. Chat with AI to discover everything about Tika Ram Khojwar.
+  // Show temporary loading message
+  const loadingDiv = appendMessage('💬 Thinking...', 'received', true);
 
-Job Title: Professor at KIST
-Current Location: Kathmandu, Nepal
-Years of Experience: 2 years
-Total Projects: 3
-   • E-Commerce Website
-   • Leetlab
-   • mystry_message_app_nextjs
-   • Blogging Website
+  const MY_DATA = `
+Name: Tika Ram Khojwar  
+TikaBook: TikaBook is a social-media-style portfolio. Chat with AI to discover everything about Tika Ram Khojwar.  
 
-Skills Overview: 5 categories
-   • Frontend
-   • Backend
-   • Databases
-   • Tools
-   • Soft Skills
+**Job Title:** Professor at KIST  
+**Location:** Kathmandu, Nepal  
+**Experience:** 2 years  
 
-Education:
-   • Master of Computer Information Systems (MCIS) – Nepal College of Information Technology, Pokhara University (2020-2024, CGPA 3.76/4.0)
-   • Bachelor of Computer Application (BCA) – Crimson College of Technology, Pokhara University (2015-2019)
+**Projects:**  
+- E-Commerce Website  
+- Leetlab  
+- Mystery Message App (Next.js)  
+- Blogging Website  
 
-Frontend Skills: HTML5, CSS3, JavaScript, React, Next.js, Redux, TailwindCSS, Responsive Design
-Backend Skills: Node.js, Express.js, RESTful APIs, Authentication, JWT, NextAuth
-Databases: MongoDB, Mongoose, PostgreSQL, Prisma
-Tools: Git, GitHub, VS Code, Postman, Vercel, NPM/Yarn, Linux
-Soft Skills: Problem Solving, Team Collaboration, Clean Code, Agile
+**Skills Overview (5 Categories):**  
+- **Frontend:** HTML5, CSS3, JavaScript, React, Next.js, Redux, TailwindCSS, Responsive Design  
+- **Backend:** Node.js, Express.js, RESTful APIs, Authentication, JWT, NextAuth  
+- **Databases:** MongoDB, Mongoose, PostgreSQL, Prisma  
+- **Tools:** Git, GitHub, VS Code, Postman, Vercel, NPM/Yarn, Linux  
+- **Soft Skills:** Problem Solving, Team Collaboration, Clean Code, Agile  
 
-Contact:
-   • Email: khojwartikaram@gmail.com
-   • LinkedIn: https://www.linkedin.com/in/tika-ram-khojwar-2116a9179/
-   • GitHub: https://github.com/khojwar
-   • Phone: +977 9867173083
+**Education:**  
+- MCIS (Pokhara University, NCIT) — CGPA 3.76  
+- BCA (Crimson College of Technology) — CGPA 3.28  
 
-Availability: Open to freelance, teaching, and collaboration projects
-Languages: Nepali (native), English (fluent)
-Hobbies: Coding challenges, open-source contributions, hiking, photography
-Favorite Quote: "Code is like humor. When you have to explain it, it’s bad." – Cory House
-Fun Fact: Built an AI-powered chat inside my own portfolio!
-Teaching Subjects: Web Technology I & II, AI, IT Ethics & Cybersecurity, Programming with Python, Database Systems
-Freelance Rate: $30–50/hour (negotiable)
-Portfolio URL: https://tikaram.dev
-YouTube: https://youtube.com/@tikaram
-Preferred Stack: React + Next.js + Express + Mongodb + Mongoose + Prisma + PostgreSQL + Tailwind + laravel
-Time Zone: NPT (UTC+5:45)
-Response Time: Usually within 2 hours
-`.trim();
+**Contact:**  
+- 📧 khojwartikaram@gmail.com  
+- 💼 [LinkedIn](https://www.linkedin.com/in/tika-ram-khojwar-2116a9179/)  
+- 💻 [GitHub](https://github.com/khojwar)  
 
-// Certifications: Google Cloud Associate, AWS Developer (2024)
-// Awards: Best Final-Year Project (NCIT, 2024)
-// Blog: https://blog.tikaram.dev
-// Open Source Contributions: 12+ repos, 300+ stars
+**Languages:** Nepali (native), English (fluent)  
+**Hobbies:** Coding, Open Source, Hiking, Photography  
+**Favorite Quote:** "Code is like humor. When you have to explain it, it’s bad." – Cory House  
+  `.trim();
 
-  // ---- 3. Get strict answer ----
   const botReply = await getGeminiResponse(userMsg, MY_DATA);
 
-  // ---- 4. Show bot reply ----
+  // Replace loading message with formatted reply
+  loadingDiv.remove();
   appendMessage(botReply, 'received');
 }
 
-// Helper to append messages (you already have similar code)
-function appendMessage(text, type) {
+// === Append Messages (supports Markdown) === //
+function appendMessage(text, type, isTemporary = false) {
   const div = document.createElement('div');
   div.className = `message ${type}`;
-  div.textContent = text;
+
+  // Support Markdown-like formatting
+  div.innerHTML = text
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') // **bold**
+    .replace(/\*(.*?)\*/g, '<em>$1</em>') // *italic*
+    .replace(/\n/g, '<br>') // line breaks
+    .replace(/- (.*?)(?=\n|$)/g, '• $1'); // bullet points
+
   chatMessages.appendChild(div);
   chatMessages.scrollTop = chatMessages.scrollHeight;
+
+  if (isTemporary) return div;
 }
 
-// Send on button click
+// === Send message via button or Enter key === //
 sendMessage.addEventListener('click', sendMsg);
-
-// Send on Enter key
 chatInput.addEventListener('keypress', (e) => {
   if (e.key === 'Enter') sendMsg();
 });
