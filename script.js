@@ -1,8 +1,23 @@
+
 document.addEventListener("DOMContentLoaded", () => {
 
+  document.getElementById('search-icon').addEventListener('click', () => {
+    document.querySelector('.logo-hamburger').style.display = 'none';
+    document.querySelector('.nav-icons').style.display = 'none';
+    document.querySelector('.search').style.display = 'flex';
+    document.querySelector('.search').style.width = '100%';
+
+  })
+
   // Simple search filter (filters posts by title)
-  document.querySelector('.search').addEventListener('input', function() {
+  document.querySelector('.search-input').addEventListener('input', function() {
       const query = this.value.toLowerCase();
+      if (query.length > 0) {
+        document.querySelector('.search .i-cross').style.display = 'block';
+      } else {
+        document.querySelector('.search .i-cross').style.display = 'none';
+
+      }
       document.querySelectorAll('.post').forEach(post => {
           const titleElement = post.querySelector('h2') || post.querySelector('h3');
           const title = titleElement ? titleElement.textContent.toLowerCase() : '';
@@ -10,6 +25,35 @@ document.addEventListener("DOMContentLoaded", () => {
       });
   });
 
+  document.querySelector('.search .i-cross').addEventListener('click', () => {
+    document.querySelector('.search-input').value = "";
+    document.querySelector('.search .i-cross').style.display = 'none';
+    // Show all posts
+    document.querySelectorAll('.post').forEach(post => {
+      post.style.display = 'block';
+    });
+
+    document.querySelector('.logo-hamburger').style.display = 'flex';
+    document.querySelector('.nav-icons').style.display = 'flex';
+    // document.querySelector('.search').style.width = '40%';
+
+    // Toggle based on viewport width
+    const searchEl = document.querySelector('.search');
+    const searchIcon = document.getElementById('search-icon');
+    const isSmallScreen = window.matchMedia('(max-width: 480px)').matches;
+
+    if (isSmallScreen) {
+      if (searchEl) searchEl.style.display = 'none';
+      if (searchIcon) searchIcon.style.display = 'block';
+    } else {
+      if (searchEl) {
+        searchEl.style.display = 'flex';
+        searchEl.style.width = '40%';
+      }
+      if (searchIcon) searchIcon.style.display = 'none';
+    }
+
+  })
 
   // Greeting Message
   const hour = new Date().getHours();

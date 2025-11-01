@@ -13,12 +13,19 @@
 
   <!-- 🔷 Top Navbar -->
   <header class="navbar">
+    <div class="logo-hamburger">
+        <div class="icon hamburger" id="hamburger"><i class="fa-solid fa-bars"></i></div>
     <div class="logo">TikaBook</div>
-    <input type="text" class="search" placeholder="Search portfolio..." />
+    </div>
+    <div class="search">
+        <i class="fa-solid fa-magnifying-glass"></i> 
+        <input type="text" class="search-input" placeholder="Search portfolio..." />
+        <i class="fa-solid fa-xmark i-cross"></i>
+    </div>
     <div class="nav-icons">
-      <i class="icon hamburger" id="hamburger">☰</i>
-      <i class="icon" id="chatIcon">💬</i>
-      <i class="icon">🔔</i>
+      <div class="icon" id="chatIcon"><i class="fa-solid fa-comment"></i></div>
+      <div class="icon" id="notification-bell"><i class="fa-solid fa-bell"></i></div>
+      <div class="icon" id="search-icon"><i class="fa-solid fa-magnifying-glass"></i></div>
       <img src="./public/profile.jpg" alt="Profile" class="profile-pic" />
     </div>
   </header>
@@ -100,7 +107,7 @@
 
           <div class="stat-card">
             <div class="stat-icon">📁</div>
-            <div class="stat-value">3</div>
+            <div class="stat-value">4</div>
             <div class="stat-label">Projects</div>
           </div>
 
@@ -559,6 +566,7 @@
             </div>
             <h3 class="content-title">Project: Blogging Website</h3>
             <div class="ftags">
+              <span class="ftag">#Appwrite</span>
               <span class="ftag">#Node-Js</span>
               <span class="ftag">#React-Js</span>
               <span class="ftag">#Tailwind-CSS</span>
@@ -568,7 +576,7 @@
               <span class="ftag">#TinyMCE</span>
             </div>
             <img src="./public/blog.avif" width="600" height="300" alt="Project Image" class="post-image">
-            <p>Developed a full-stack blog platform that allows users to create, edit, and share blogs seamlessly. The application provides a smooth and responsive user experience with a modern design and secure user authentication.</p>
+            <p>Developed a full-stack blogging platform where users can create, edit, and manage blog posts with ease. The app features a modern interface, secure authentication, and powerful content management using Appwrite as the backend service.</p>
             
             <div>
               <p>✨ Key Features:</p>

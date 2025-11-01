@@ -85,14 +85,36 @@ a {
   color: var(--accent-color);
 }
 
+.logo-hamburger {
+  display: flex;
+  gap: 20px;
+}
+
+
 .search {
   width: 40%;
-  padding: 8px 10px;
+  padding: 8px 20px;
   border-radius: 20px;
   border: none;
   background: var(--subtle-bg);
   color: var(--text-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
 }
+
+.search .i-cross {
+  display: none;
+  cursor: pointer;
+}
+
+.search-input {
+  all: unset; 
+  width: 100%;
+}
+
+
 
 .nav-icons {
   display: flex;
@@ -103,6 +125,10 @@ a {
 .icon {
   cursor: pointer;
   font-size: var(--font-size-medium);
+}
+
+#search-icon {
+  display: none;
 }
 
 .profile-pic {
@@ -725,75 +751,7 @@ body.share-open .share-dropdown { display: none; }
 
 
 
-
-
-
-
-/* ==== RESPONSIVE BREAKPOINTS ==== */
-
-@media (max-width: 1350px) {
-  .featured-info {
-    grid-template-columns: repeat(2, 1fr); 
-  }
-}
-
-/* Tablet & below */
-@media (max-width: 992px) {
-  .container {
-    margin-left: 0;
-    width: 100%;
-    flex-direction: column;
-  }
-  .sidebar-left, .sidebar-right {
-    display: none;
-  }
-  .search {
-    width: 60%;
-  }
-  .hamburger {
-    display: block;
-    cursor: pointer;
-  }
-
-  .mobile-menu.active {
-    display: flex;
-  }
-  .mobile-nav-links {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-  .mobile-nav-links a {
-    display: block;
-    padding: 10px 20px;
-    color: var(--text-color);
-    text-decoration: none;
-    transition: background 0.3s;
-  }
-  .mobile-nav-links a:hover {
-    background: var(--active-link-bg);
-  }
-
-  .featured-info {
-    grid-template-columns: repeat(1, 1fr); 
-  }
-}
-
-/* Mobile */
-/* @media (max-width: 768px) {
-  .post-header img { width:36px; height:36px; }
-} */
-
-/* Extra small phones */
-/* @media (max-width: 480px) {
-    .logo { font-size:1.3rem; }
-    .post-actions { flex-wrap:wrap; gap:8px; }
-    .comment-form input { font-size:0.85rem; }
-} */
-
+/* ================== */
 /* Chat Box Styles */
 .chat-box {
   position: fixed;
@@ -892,6 +850,68 @@ body.share-open .share-dropdown { display: none; }
   opacity: 0.8;
 }
 
+
+
+
+
+
+
+
+
+/* ==== RESPONSIVE BREAKPOINTS ==== */
+
+@media (max-width: 1350px) {
+  .featured-info {
+    grid-template-columns: repeat(2, 1fr); 
+  }
+}
+
+/* Tablet & below */
+@media (max-width: 992px) {
+  .container {
+    margin-left: 0;
+    width: 100%;
+    flex-direction: column;
+  }
+  .sidebar-left, .sidebar-right {
+    display: none;
+  }
+  .search {
+    width: 60%;
+  }
+  .hamburger {
+    display: block;
+    cursor: pointer;
+  }
+
+  .mobile-menu.active {
+    display: flex;
+  }
+  .mobile-nav-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .mobile-nav-links a {
+    display: block;
+    padding: 10px 20px;
+    color: var(--text-color);
+    text-decoration: none;
+    transition: background 0.3s;
+  }
+  .mobile-nav-links a:hover {
+    background: var(--active-link-bg);
+  }
+
+  .featured-info {
+    grid-template-columns: repeat(1, 1fr); 
+  }
+}
+
+/* -------------- Mobile -------------- */
 /* Responsive for chat box */
 @media (max-width: 768px) {
   .chat-box {
@@ -899,4 +919,22 @@ body.share-open .share-dropdown { display: none; }
     right: 5%;
     height: 400px;
   }
+  /* .post-header img { width:36px; height:36px; } */
+}
+
+
+
+/* Extra small phones */
+@media (max-width: 480px) {
+    /* .logo { font-size:1.3rem; }
+    .post-actions { flex-wrap:wrap; gap:8px; }
+    .comment-form input { font-size:0.85rem; } */
+    .search {
+      display: none;
+    }
+
+    #search-icon {
+      display: block;
+      cursor: pointer;
+    }
 }
