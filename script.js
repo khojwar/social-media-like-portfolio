@@ -303,6 +303,8 @@ document.addEventListener('click', function (e) {
     window.open(shareUrl, '_blank', 'width=600,height=400');
 });
 
+
+
 // Chat Box Functionality
 const chatIcon = document.getElementById('chatIcon');
 const chatBox = document.getElementById('chatBox');
@@ -325,7 +327,6 @@ chatIcon.addEventListener('click', () => {
 closeChat.addEventListener('click', () => {
   chatBox.style.display = 'none';
 });
-
 
 
 /**
@@ -394,7 +395,7 @@ Use a natural, engaging tone. Use Markdown formatting for clarity (bold, lists, 
   }
 }
 
-// === Send Message Handler === //
+// === Send Message === //
 async function sendMsg() {
   const userMsg = chatInput.value.trim();
   if (!userMsg) return;
@@ -402,8 +403,9 @@ async function sendMsg() {
   appendMessage(userMsg, 'sent');
   chatInput.value = '';
 
-  // Show temporary loading message
-  const loadingDiv = appendMessage('💬 Thinking...', 'received', true);
+  // Add "typing..." animation
+  const typingDiv = appendMessage('💬 Tika’s AI is typing', 'received', true);
+  startTypingAnimation(typingDiv);
 
   const MY_DATA = `
 Name: Tika Ram Khojwar  
@@ -442,34 +444,61 @@ TikaBook: TikaBook is a social-media-style portfolio. Chat with AI to discover e
 
   const botReply = await getGeminiResponse(userMsg, MY_DATA);
 
-  // Replace loading message with formatted reply
-  loadingDiv.remove();
-  appendMessage(botReply, 'received');
+  // Remove typing animation and show AI reply with typing effect
+  typingDiv.remove();
+  const botDiv = appendMessage('', 'received');
+  await typeText(botDiv, botReply);
 }
 
-// === Append Messages (supports Markdown) === //
+// === Append Message === //
 function appendMessage(text, type, isTemporary = false) {
   const div = document.createElement('div');
   div.className = `message ${type}`;
+  div.innerHTML = formatMarkdown(text);
+  chatMessages.appendChild(div);
+  chatMessages.scrollTop = chatMessages.scrollHeight;
 
-  // Support Markdown-like formatting
-  div.innerHTML = text
+  return div;
+}
+
+// === Typing Animation Dots === //
+function startTypingAnimation(div) {
+  let dots = 0;
+  const interval = setInterval(() => {
+    dots = (dots + 1) % 4;
+    div.textContent = `💬 Tika’s AI is typing${'.'.repeat(dots)}`;
+  }, 400);
+  div.dataset.typingInterval = interval;
+}
+
+// === Typewriter Effect === //
+async function typeText(div, text) {
+  const formatted = formatMarkdown(text);
+  div.innerHTML = '';
+  let i = 0;
+  const typingSpeed = 10; // ms per character
+
+  const interval = setInterval(() => {
+    div.innerHTML = formatMarkdown(text.slice(0, i));
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+    i++;
+    if (i > text.length) clearInterval(interval);
+  }, typingSpeed);
+}
+
+// === Markdown Formatter === //
+function formatMarkdown(text) {
+  return text
     .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') // **bold**
     .replace(/\*(.*?)\*/g, '<em>$1</em>') // *italic*
     .replace(/\n/g, '<br>') // line breaks
     .replace(/- (.*?)(?=\n|$)/g, '• $1'); // bullet points
-
-  chatMessages.appendChild(div);
-  chatMessages.scrollTop = chatMessages.scrollHeight;
-
-  if (isTemporary) return div;
 }
 
-// === Send message via button or Enter key === //
+// === Send message on click or Enter === //
 sendMessage.addEventListener('click', sendMsg);
 chatInput.addEventListener('keypress', (e) => {
   if (e.key === 'Enter') sendMsg();
 });
-
 
 });
