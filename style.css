@@ -80,8 +80,8 @@ a {
   transition: background 0.3s;
 }
 
-.logo {
-  font-size: var(--font-size-large);
+.logo a {
+  font-size: var(--font-size-medium);
   font-weight: var(--font-weight-bold);
   color: var(--accent-color);
 }
